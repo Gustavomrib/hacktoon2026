@@ -21,7 +21,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kodecolor — Design System",
+  title: "4cast — Design System",
   description:
     "Design system base do projeto: tokens de cor, tipografia, espaçamento, elevação e componentes.",
 };

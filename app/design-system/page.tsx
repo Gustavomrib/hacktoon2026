@@ -27,7 +27,7 @@ import { Rating } from "@/components/ui/rating";
 import { TabsDemo } from "@/components/design-system/tabs-demo";
 
 export const metadata: Metadata = {
-  title: "Design System — Kodecolor",
+  title: "Design System — 4cast",
   description: "Tokens, escalas e componentes do design system.",
 };
 
@@ -456,7 +456,7 @@ export default function DesignSystemPage() {
                     <Input
                       id="ds-email"
                       type="email"
-                      placeholder="hello@kodecolor.com"
+                      placeholder="hello@4cast.com"
                       icon={<Mail />}
                     />
                   </div>
