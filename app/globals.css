@@ -168,6 +168,55 @@
   --breakpoint-lg: 64rem; /* 1024px */
   --breakpoint-xl: 80rem; /* 1280px */
   --breakpoint-2xl: 96rem; /* 1536px */
+
+  /* ------------------------------------------------------------------
+     10. DATA VIZ — paleta de séries
+     Validada para daltonismo (protanopia/deuteranopia), croma e contraste
+     nas duas superfícies do produto: branco (painel) e brand-950 (telão).
+     Atribuir SEMPRE na ordem dos slots — a ordem é o mecanismo de
+     segurança, não estética. Nunca gerar um 5º tom.
+
+     Nota: brand-500 (#4a7fa7) NÃO serve como cor de série — croma 0.084,
+     abaixo do piso de 0.10, ele lê como cinza dentro de um gráfico.
+     Ele é cor de interface; as séries usam o azul irmão saturado.
+     ------------------------------------------------------------------ */
+  --color-chart-1: #2a78d6; /* azul */
+  --color-chart-2: #eb6834; /* laranja */
+  --color-chart-3: #1baf7a; /* água */
+  --color-chart-4: #eda100; /* amarelo */
+
+  /* Rampa ordinal/sequencial — um hue, claro → escuro.
+     Usada onde a cor codifica magnitude ou nível (matriz de polivalência,
+     mapa de calor). Nunca arco-íris. */
+  --color-scale-1: #86b6ef;
+  --color-scale-2: #3987e5;
+  --color-scale-3: #184f95;
+
+  /* Cromo do gráfico — recessivo por contrato */
+  --color-grid: #e4eaf1; /* linha de grade, hairline sólida */
+  --color-axis: #cbd5e1; /* eixo e linha de base */
+  --color-mark-muted: #cbd5e1; /* série de contexto em gráficos de ênfase */
+
+  /* ------------------------------------------------------------------
+     11. STATUS OPERACIONAL — escala fixa, significado reservado
+     Nunca reaproveitar como "série 5". Sempre acompanhada de ícone e
+     rótulo — a cor jamais carrega o significado sozinha.
+     ------------------------------------------------------------------ */
+  --color-status-ok: #10b981; /* rodando · risco baixo · no prazo */
+  --color-status-warn: #f59e0b; /* setup · risco atenção · atrasando */
+  --color-status-critical: #ef4444; /* parada · risco alto · ruptura */
+  --color-status-info: #3b82f6; /* manutenção programada · informativo */
+  --color-status-idle: #94a3b8; /* ociosa · sem dado · fora de turno */
+
+  /* Trilho vazio de medidores e gauges.
+     Regra: o trilho é um degrau mais claro da MESMA rampa do preenchimento,
+     nunca um cinza genérico — assim o estado é lido na barra inteira, não só
+     na parte cheia. Redefinido no escopo do telão para os degraus escuros. */
+  --color-track-ok: #ecfdf5;
+  --color-track-warn: #fffbeb;
+  --color-track-critical: #fef2f2;
+  --color-track-info: #eff6ff;
+  --color-track-idle: #f1f5f9;
 }
 
 /* Padrão global de transição do DS: 150ms ease-in-out */
@@ -222,7 +271,73 @@
   }
 }
 
+/* ==========================================================================
+   ESCOPO TELÃO — Painel informativo de chão de fábrica
+   Redefine os tokens semânticos dentro da subárvore do telão. Como todos os
+   componentes consomem tokens (nunca hex), o design system inteiro passa a
+   funcionar sobre fundo escuro sem nenhuma variante nova.
+
+   Por que escuro: TV a 3m de altura, luz alta, leitura a 5–15m. Fundo claro
+   vira lanterna e apaga o dado. Aqui a superfície recua e a cor é informação.
+   ========================================================================== */
+
+.tv-scope {
+  color-scheme: dark;
+
+  --color-canvas: #0a1931;
+  --color-surface: #12294a;
+  --color-surface-muted: #0d2039;
+  --color-surface-inset: #0a1931;
+
+  --color-border: #1e3f66;
+  --color-border-strong: #2b5279;
+
+  --color-content: #f6fafd;
+  --color-content-secondary: #b3cfe5;
+  --color-content-muted: #8fb8d8;
+
+  /* Séries repassadas para a superfície escura — mesmos hues, outro degrau.
+     Não é inversão automática do modo claro: cada degrau foi validado
+     contra #0a1931. */
+  --color-chart-1: #3987e5;
+  --color-chart-2: #d95926;
+  --color-chart-3: #199e70;
+  --color-chart-4: #c98500;
+
+  --color-grid: #1e3f66;
+  --color-axis: #2b5279;
+  --color-mark-muted: #2b5279;
+
+  /* Trilhos no degrau escuro da própria rampa — no fundo navy, um trilho
+     verde-claro viraria a parte mais brilhante da tela e roubaria a leitura
+     do dado. */
+  --color-track-ok: #0f3b30;
+  --color-track-warn: #3d2f0c;
+  --color-track-critical: #3f1d1d;
+  --color-track-info: #16305c;
+  --color-track-idle: #1c2f4a;
+
+  background-color: var(--color-canvas);
+  color: var(--color-content);
+}
+
 @layer utilities {
+  /* Pulso do estado de alerta crítico no telão. Lento de propósito: piscar
+     rápido a 10m de distância cansa e vira ruído em 3 dias de operação. */
+  .animate-alerta {
+    animation: alerta-pulso 1.6s var(--ease-standard) infinite;
+  }
+
+  @keyframes alerta-pulso {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.55;
+    }
+  }
+
   /* Label de seção — o "WORK", "SKILLS", "CONTACT INFORMATION" do layout */
   .label-eyebrow {
     font-size: var(--text-xs);
