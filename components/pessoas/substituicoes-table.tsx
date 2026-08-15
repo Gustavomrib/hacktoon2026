@@ -26,7 +26,7 @@ export interface SubstituicoesTableProps {
   substituicoes: PlannedSubstitution[];
 }
 
-type EstadoDetalhe =
+export type EstadoDetalhe =
   | { tipo: "carregando" }
   | { tipo: "erro" }
   | { tipo: "ok"; resultado: MatchmakingResult };
@@ -84,7 +84,7 @@ export function SubstituicoesTable({ substituicoes }: SubstituicoesTableProps) {
                     <TD>{s.funcionarioSubstitutoNome}</TD>
                     <TD>{s.postoDestinoCodigo}</TD>
                     <TD>{s.equipeNome ?? "—"}</TD>
-                    <TD numerica>{s.score.toFixed(1)}</TD>
+                    <TD numerica>{s.score}</TD>
                     <TD>
                       <button
                         type="button"
@@ -124,7 +124,11 @@ export function SubstituicoesTable({ substituicoes }: SubstituicoesTableProps) {
   );
 }
 
-function DetalheSubstituicao({ estado }: { estado: EstadoDetalhe | undefined }) {
+export function DetalheSubstituicao({
+  estado,
+}: {
+  estado: EstadoDetalhe | undefined;
+}) {
   if (!estado || estado.tipo === "carregando") {
     return (
       <p className="text-content-muted flex items-center gap-2 p-4 text-sm">
@@ -195,7 +199,7 @@ function DetalheSubstituicao({ estado }: { estado: EstadoDetalhe | undefined }) 
                   rotulo={`Impacto ${estiloImpactoOperacional(s.impacto).rotulo.toLowerCase()}`}
                 />
                 <span className="text-content-muted text-xs tabular-nums">
-                  score {s.score.toFixed(1)}
+                  score {s.score}
                 </span>
               </div>
             </div>
