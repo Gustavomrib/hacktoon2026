@@ -75,7 +75,9 @@ export const alertasCriticosPublicos = alertasPublicos.filter(
 );
 
 export function alertasPublicosDaLinha(numeroLinha: string) {
-  return alertasPublicos.filter((a) => a.origem.includes(`Linha ${numeroLinha}`));
+  return alertasPublicos.filter((a) =>
+    a.origem.includes(`Linha ${numeroLinha}`),
+  );
 }
 
 export const resumoAlertas = {
@@ -83,7 +85,10 @@ export const resumoAlertas = {
   reconhecidos: alertas.filter((a) => a.status === "reconhecido").length,
   resolvidos: alertas.filter((a) => a.status === "resolvido").length,
   foraDoSla: alertas.filter(
-    (a) => a.status !== "resolvido" && a.slaMinutos > 0 && a.idadeMinutos > a.slaMinutos,
+    (a) =>
+      a.status !== "resolvido" &&
+      a.slaMinutos > 0 &&
+      a.idadeMinutos > a.slaMinutos,
   ).length,
   tempoMedioReconhecimentoMin: 14,
   tempoMedioResolucaoMin: 63,

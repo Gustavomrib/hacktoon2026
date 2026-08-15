@@ -1,8 +1,4 @@
-import type {
-  CausaParada,
-  Estacao,
-  Linha,
-} from "./types";
+import type { CausaParada, Estacao, Linha } from "./types";
 
 /**
  * Cenário de referência — uma metalúrgica discreta, 3 linhas, 2 turnos.
@@ -25,29 +21,120 @@ export const HORARIO_TURNO = "06:00 – 14:20";
 export const AGORA = "09:24";
 
 export const linhas: Linha[] = [
-  { id: "L1", nome: "Linha 1 — Montagem A", setor: "Montagem", cadenciaNominal: 120 },
-  { id: "L2", nome: "Linha 2 — Montagem B", setor: "Montagem", cadenciaNominal: 120 },
-  { id: "L3", nome: "Linha 3 — Usinagem", setor: "Usinagem", cadenciaNominal: 45 },
+  {
+    id: "L1",
+    nome: "Linha 1 — Montagem A",
+    setor: "Montagem",
+    cadenciaNominal: 120,
+  },
+  {
+    id: "L2",
+    nome: "Linha 2 — Montagem B",
+    setor: "Montagem",
+    cadenciaNominal: 120,
+  },
+  {
+    id: "L3",
+    nome: "Linha 3 — Usinagem",
+    setor: "Usinagem",
+    cadenciaNominal: 45,
+  },
 ];
 
 export const estacoes: Estacao[] = [
-  { id: "E01", nome: "Prensagem A", linhaId: "L1", lotacaoMinima: 1, lotacaoAtual: 1 },
-  { id: "E02", nome: "Solda A", linhaId: "L1", lotacaoMinima: 2, lotacaoAtual: 2 },
-  { id: "E03", nome: "Montagem A", linhaId: "L1", lotacaoMinima: 3, lotacaoAtual: 3 },
-  { id: "E04", nome: "Inspeção A", linhaId: "L1", lotacaoMinima: 1, lotacaoAtual: 1 },
-  { id: "E05", nome: "Prensagem B", linhaId: "L2", lotacaoMinima: 1, lotacaoAtual: 1 },
-  { id: "E06", nome: "Solda B", linhaId: "L2", lotacaoMinima: 2, lotacaoAtual: 1 },
-  { id: "E07", nome: "Montagem B", linhaId: "L2", lotacaoMinima: 3, lotacaoAtual: 1 },
-  { id: "E08", nome: "Inspeção B", linhaId: "L2", lotacaoMinima: 1, lotacaoAtual: 0 },
-  { id: "E09", nome: "Torneamento", linhaId: "L3", lotacaoMinima: 2, lotacaoAtual: 2 },
-  { id: "E10", nome: "Fresamento", linhaId: "L3", lotacaoMinima: 1, lotacaoAtual: 1 },
-  { id: "E11", nome: "Retífica", linhaId: "L3", lotacaoMinima: 1, lotacaoAtual: 1 },
+  {
+    id: "E01",
+    nome: "Prensagem A",
+    linhaId: "L1",
+    lotacaoMinima: 1,
+    lotacaoAtual: 1,
+  },
+  {
+    id: "E02",
+    nome: "Solda A",
+    linhaId: "L1",
+    lotacaoMinima: 2,
+    lotacaoAtual: 2,
+  },
+  {
+    id: "E03",
+    nome: "Montagem A",
+    linhaId: "L1",
+    lotacaoMinima: 3,
+    lotacaoAtual: 3,
+  },
+  {
+    id: "E04",
+    nome: "Inspeção A",
+    linhaId: "L1",
+    lotacaoMinima: 1,
+    lotacaoAtual: 1,
+  },
+  {
+    id: "E05",
+    nome: "Prensagem B",
+    linhaId: "L2",
+    lotacaoMinima: 1,
+    lotacaoAtual: 1,
+  },
+  {
+    id: "E06",
+    nome: "Solda B",
+    linhaId: "L2",
+    lotacaoMinima: 2,
+    lotacaoAtual: 1,
+  },
+  {
+    id: "E07",
+    nome: "Montagem B",
+    linhaId: "L2",
+    lotacaoMinima: 3,
+    lotacaoAtual: 1,
+  },
+  {
+    id: "E08",
+    nome: "Inspeção B",
+    linhaId: "L2",
+    lotacaoMinima: 1,
+    lotacaoAtual: 0,
+  },
+  {
+    id: "E09",
+    nome: "Torneamento",
+    linhaId: "L3",
+    lotacaoMinima: 2,
+    lotacaoAtual: 2,
+  },
+  {
+    id: "E10",
+    nome: "Fresamento",
+    linhaId: "L3",
+    lotacaoMinima: 1,
+    lotacaoAtual: 1,
+  },
+  {
+    id: "E11",
+    nome: "Retífica",
+    linhaId: "L3",
+    lotacaoMinima: 1,
+    lotacaoAtual: 1,
+  },
 ];
 
 /** Pareto do turno. Ordenado por minutos — a ordem é o conteúdo. */
 export const causasParada: CausaParada[] = [
-  { causa: "Estação sem operador", minutos: 244, ocorrencias: 3, pilarOrigem: "pessoas" },
-  { causa: "Sem abastecimento da estação anterior", minutos: 72, ocorrencias: 2, pilarOrigem: "pessoas" },
+  {
+    causa: "Estação sem operador",
+    minutos: 244,
+    ocorrencias: 3,
+    pilarOrigem: "pessoas",
+  },
+  {
+    causa: "Sem abastecimento da estação anterior",
+    minutos: 72,
+    ocorrencias: 2,
+    pilarOrigem: "pessoas",
+  },
 ];
 
 export const paradasDoTurno: Array<{
@@ -61,19 +148,34 @@ export const paradasDoTurno: Array<{
   linhaId: string;
 }> = [
   {
-    id: "P02", linhaId: "L2", inicio: "06:00", fim: null,
-    duracaoMinutos: 110, causa: "Estação sem operador",
-    pilarOrigem: "pessoas", custo: 3420,
+    id: "P02",
+    linhaId: "L2",
+    inicio: "06:00",
+    fim: null,
+    duracaoMinutos: 110,
+    causa: "Estação sem operador",
+    pilarOrigem: "pessoas",
+    custo: 3420,
   },
   {
-    id: "P03", linhaId: "L2", inicio: "06:12", fim: null,
-    duracaoMinutos: 134, causa: "Estação sem operador",
-    pilarOrigem: "pessoas", custo: 2180,
+    id: "P03",
+    linhaId: "L2",
+    inicio: "06:12",
+    fim: null,
+    duracaoMinutos: 134,
+    causa: "Estação sem operador",
+    pilarOrigem: "pessoas",
+    custo: 2180,
   },
   {
-    id: "P05", linhaId: "L2", inicio: "08:12", fim: null,
-    duracaoMinutos: 72, causa: "Sem abastecimento da estação anterior",
-    pilarOrigem: "pessoas", custo: 4180,
+    id: "P05",
+    linhaId: "L2",
+    inicio: "08:12",
+    fim: null,
+    duracaoMinutos: 72,
+    causa: "Sem abastecimento da estação anterior",
+    pilarOrigem: "pessoas",
+    custo: 4180,
   },
 ];
 

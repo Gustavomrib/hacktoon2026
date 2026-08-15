@@ -91,7 +91,9 @@ export default function TelaoPage() {
           </div>
 
           <div className="border-border mt-auto w-full border-t pt-4 text-center">
-            <p className="text-content-muted text-lg">Custo de parada · turno</p>
+            <p className="text-content-muted text-lg">
+              Custo de parada · turno
+            </p>
             <p className="font-display text-content text-4xl leading-none font-bold tabular-nums">
               {formatarMoedaCompacta(resumoGeral.custoParadaHoje)}
             </p>
@@ -151,7 +153,6 @@ export default function TelaoPage() {
           </p>
         </section>
       </div>
-
     </div>
   );
 }

@@ -9,11 +9,7 @@ import {
   formatarPercentual,
 } from "@/lib/format";
 import { alertasPublicosDaLinha } from "@/lib/mock/alertas";
-import {
-  estacoes,
-  linhas,
-  oeePorLinha,
-} from "@/lib/mock/fabrica";
+import { estacoes, linhas, oeePorLinha } from "@/lib/mock/fabrica";
 
 /**
  * Telão de setor — a TV pendurada em cima de uma linha específica.
@@ -45,7 +41,10 @@ export default async function TelaoSetorPage({
   const oee = oeePorLinha.find((o) => o.linha === `Linha ${linha.id[1]}`);
 
   const estacoesDaLinha = estacoes.filter((e) => e.linhaId === linha.id);
-  const lotacaoMinima = estacoesDaLinha.reduce((s, e) => s + e.lotacaoMinima, 0);
+  const lotacaoMinima = estacoesDaLinha.reduce(
+    (s, e) => s + e.lotacaoMinima,
+    0,
+  );
   const lotacaoAtual = estacoesDaLinha.reduce((s, e) => s + e.lotacaoAtual, 0);
   const descobertas = estacoesDaLinha.filter(
     (e) => e.lotacaoAtual < e.lotacaoMinima,

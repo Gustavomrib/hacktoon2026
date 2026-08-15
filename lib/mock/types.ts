@@ -193,7 +193,12 @@ export interface SaudeSimulador {
   uptimeMinutos: number;
   websocket: { conectado: boolean; latenciaMs: number; clientes: number };
   banco: { conectado: boolean; latenciaMs: number; registros: number };
-  memoria: { usadaMb: number; totalMb: number; heapMb: number; externaMb: number };
+  memoria: {
+    usadaMb: number;
+    totalMb: number;
+    heapMb: number;
+    externaMb: number;
+  };
   sistema: {
     versao: string;
     node: string;

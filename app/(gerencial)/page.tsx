@@ -77,7 +77,9 @@ export default function VisaoGeralPage() {
           >
             <p className="font-display text-content text-5xl leading-none font-bold">
               {resumoGeral.oeeGlobal.toFixed(1).replace(".", ",")}
-              <span className="text-content-muted text-2xl font-semibold">%</span>
+              <span className="text-content-muted text-2xl font-semibold">
+                %
+              </span>
             </p>
             <p className="text-content-muted mt-1 text-sm">
               OEE global · meta {formatarPercentual(resumoGeral.oeeMeta, 0)}

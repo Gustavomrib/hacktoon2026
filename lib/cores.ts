@@ -55,22 +55,20 @@ export const NOME_PILAR: Record<Pilar, string> = {
  * notícia — ela estava no plano, e pintá-la com a mesma força de uma parada
  * imprevista faz o turno parecer duas vezes pior do que é.
  */
-export const COR_TIPO_PARADA: Record<
-  "nominal" | TipoParadaSimulada,
-  string
-> = {
+export const COR_TIPO_PARADA: Record<"nominal" | TipoParadaSimulada, string> = {
   nominal: SERIE.s3,
   planejada: SERIE.contexto,
   nao_planejada: SERIE.s2,
   propagacao: SERIE.s4,
 };
 
-export const NOME_TIPO_PARADA: Record<"nominal" | TipoParadaSimulada, string> = {
-  nominal: "Sem parada",
-  planejada: "Planejada",
-  nao_planejada: "Não planejada",
-  propagacao: "Propagação",
-};
+export const NOME_TIPO_PARADA: Record<"nominal" | TipoParadaSimulada, string> =
+  {
+    nominal: "Sem parada",
+    planejada: "Planejada",
+    nao_planejada: "Não planejada",
+    propagacao: "Propagação",
+  };
 
 /** Cromo recessivo do gráfico. */
 export const CROMO = {

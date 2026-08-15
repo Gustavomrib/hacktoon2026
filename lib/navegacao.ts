@@ -59,4 +59,3 @@ export const navegacao: ItemNavegacao[] = [
     descricao: "Fila de ação com responsável e SLA",
   },
 ];
-

@@ -150,7 +150,8 @@ export function estiloEstacao(estado: EstadoEstacao) {
  */
 export const EXPLICACAO_ESTACAO: Record<EstadoEstacao, string> = {
   produzindo: "Consumindo e entregando no ritmo previsto.",
-  bloqueada: "Sem defeito — o buffer de saída está cheio e não há para onde entregar.",
+  bloqueada:
+    "Sem defeito — o buffer de saída está cheio e não há para onde entregar.",
   faminta: "Sem defeito — não chega peça da estação anterior.",
   parada: "Interrompida por conta própria — falha, preventiva ou setup.",
   setup: "Troca de ferramenta ou ajuste em andamento.",
