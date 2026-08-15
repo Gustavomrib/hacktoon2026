@@ -37,7 +37,7 @@ const timeline = [
   },
   {
     icon: <ThumbsUp />,
-    title: "Publicou o case “Rebranding Kodecolor”",
+    title: "Publicou o case “Rebranding 4cast”",
     meta: "Branding · há 3 semanas",
   },
 ];

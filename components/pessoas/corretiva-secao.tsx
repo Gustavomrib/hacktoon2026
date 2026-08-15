@@ -1,5 +1,6 @@
 import { Loader2, RefreshCw, TriangleAlert } from "lucide-react";
 import { SecaoHeader } from "@/components/app-shell/page-header";
+import { BuscaSubstitutoAvulso } from "@/components/pessoas/busca-substituto-avulso";
 import { SubstituicoesTable } from "@/components/pessoas/substituicoes-table";
 import { StatTile } from "@/components/ui/stat";
 import type { BatchPlanningResult } from "@/lib/api/motor2";
@@ -79,6 +80,14 @@ export function CorretivaSecao({ estado, aoTentarNovamente }: CorretivaSecaoProp
           rotulo="Sem cobertura"
           valor={String(plano.totalSemCobertura)}
         />
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <SecaoHeader
+          titulo="Buscar substituto avulso"
+          descricao="Para uma ausência que acabou de acontecer e ainda não entrou no plano do dia — informe o UUID do funcionário ausente."
+        />
+        <BuscaSubstitutoAvulso />
       </section>
 
       <section className="flex flex-col gap-3">
