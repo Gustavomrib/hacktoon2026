@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Cog, Users } from "lucide-react";
+import { ArrowRight, Users } from "lucide-react";
 import { StatusBadge } from "@/components/ui/status-indicator";
 import { COR_PILAR } from "@/lib/cores";
 import { estiloStatus } from "@/lib/status";
@@ -15,8 +15,7 @@ import { cn } from "@/lib/utils";
  * transforma isso em um sistema só.
  */
 
-const icones: Record<Pilar, typeof Cog> = {
-  maquinas: Cog,
+const icones: Record<Pilar, typeof Users> = {
   pessoas: Users,
 };
 

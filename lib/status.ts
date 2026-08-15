@@ -20,7 +20,6 @@ import type {
   FaixaRisco,
   Severidade,
   Status,
-  StatusMaquina,
   TipoEventoSimulado,
 } from "@/lib/mock/types";
 
@@ -111,24 +110,6 @@ const estilos: Record<Status, EstiloStatus> = {
 
 export function estiloStatus(status: Status): EstiloStatus {
   return estilos[status];
-}
-
-/* ─────────────────────────── Estado de máquina ──────────────────────── */
-
-const statusMaquinaMap: Record<
-  StatusMaquina,
-  { status: Status; rotulo: string; Icone: LucideIcon }
-> = {
-  rodando: { status: "ok", rotulo: "Rodando", Icone: Play },
-  parada: { status: "critico", rotulo: "Parada", Icone: OctagonX },
-  setup: { status: "atencao", rotulo: "Setup", Icone: RefreshCw },
-  manutencao: { status: "info", rotulo: "Manutenção", Icone: Wrench },
-  ociosa: { status: "neutro", rotulo: "Ociosa", Icone: CirclePause },
-};
-
-export function estiloMaquina(status: StatusMaquina) {
-  const { status: s, rotulo, Icone } = statusMaquinaMap[status];
-  return { ...estiloStatus(s), rotulo, Icone };
 }
 
 /* ───────────────────── Estado de estação no simulador ───────────────── */

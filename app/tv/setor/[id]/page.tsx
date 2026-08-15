@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import { OctagonX, UserRound } from "lucide-react";
 import { TvAlerta } from "@/components/tv/tv-alerta";
 import { TvHeader } from "@/components/tv/tv-header";
-import { TvMaquinaTile } from "@/components/tv/tv-maquina-tile";
 import { MeterLinha } from "@/components/ui/meter";
 import {
   formatarDuracao,
@@ -13,7 +12,6 @@ import { alertasPublicosDaLinha } from "@/lib/mock/alertas";
 import {
   estacoes,
   linhas,
-  maquinasPorLinha,
   oeePorLinha,
 } from "@/lib/mock/fabrica";
 
@@ -44,10 +42,7 @@ export default async function TelaoSetorPage({
   const linha = linhas.find((l) => l.id === id);
   if (!linha) notFound();
 
-  const daLinha = maquinasPorLinha(linha.id);
   const oee = oeePorLinha.find((o) => o.linha === `Linha ${linha.id[1]}`);
-  const rodando = daLinha.filter((m) => m.status === "rodando").length;
-  const paradaTotal = daLinha.reduce((s, m) => s + m.paradaMinutos, 0);
 
   const estacoesDaLinha = estacoes.filter((e) => e.linhaId === linha.id);
   const lotacaoMinima = estacoesDaLinha.reduce((s, e) => s + e.lotacaoMinima, 0);
@@ -113,18 +108,6 @@ export default async function TelaoSetorPage({
                 {formatarPercentual(oee?.oee ?? 0, 0)}
               </p>
             </div>
-            <div>
-              <p className="text-content-muted text-lg">Máquinas rodando</p>
-              <p className="font-display text-content text-4xl leading-none font-bold tabular-nums">
-                {rodando} / {daLinha.length}
-              </p>
-            </div>
-            <div>
-              <p className="text-content-muted text-lg">Tempo parado</p>
-              <p className="font-display text-content text-4xl leading-none font-bold tabular-nums">
-                {formatarDuracao(paradaTotal)}
-              </p>
-            </div>
           </div>
         </section>
 
@@ -169,18 +152,7 @@ export default async function TelaoSetorPage({
         </section>
       </div>
 
-      {/* ─────────────────────── Estado da linha ───────────────────────── */}
-      <section className="flex flex-col gap-4">
-        <h2 className="font-display text-content text-2xl font-bold">
-          Máquinas do setor
-        </h2>
-        <ul className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {daLinha.map((m) => (
-            <TvMaquinaTile key={m.id} maquina={m} />
-          ))}
-        </ul>
-      </section>
-
+      {/* ─────────────────────── Alertas do setor ───────────────────────── */}
       {alertasDoSetor.length > 0 ? (
         <section className="flex flex-col gap-4">
           <h2 className="font-display text-content text-2xl font-bold">

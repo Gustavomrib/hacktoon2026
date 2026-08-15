@@ -34,16 +34,14 @@ export const RAMPA_ORDINAL = [
  * Processos e Materiais saíram do produto e levaram junto os slots s3 e s4 —
  * que continuam existindo em `SERIE` e seguem disponíveis para qualquer outra
  * série. O que NÃO se faz é promover Pessoas para s1 agora que sobraram dois
- * pilares: a cor de Máquinas é azul desde o primeiro gráfico, e remapear slot
+ * pilares: a cor de Máquinas era azul desde o primeiro gráfico, e remapear slot
  * por causa de uma remoção é exatamente o repintar que esta regra proíbe.
  */
 export const COR_PILAR: Record<Pilar, string> = {
-  maquinas: SERIE.s1,
   pessoas: SERIE.s2,
 };
 
 export const NOME_PILAR: Record<Pilar, string> = {
-  maquinas: "Máquinas",
   pessoas: "Pessoas",
 };
 

@@ -2,7 +2,7 @@ import * as React from "react";
 import { COR_PILAR, NOME_PILAR } from "@/lib/cores";
 import { formatarDuracao, formatarMoeda } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import type { ParadaMaquina } from "@/lib/mock/types";
+import type { ParadaSimulada } from "@/lib/mock/types";
 
 /**
  * Linha do tempo das paradas do turno.
@@ -18,7 +18,7 @@ function paraMinutos(hhmm: string) {
 }
 
 export interface ShiftTimelineProps {
-  paradas: ParadaMaquina[];
+  paradas: ParadaSimulada[];
   /** Limites do turno, "HH:MM". */
   inicioTurno: string;
   fimTurno: string;
@@ -91,7 +91,7 @@ export function ShiftTimeline({
                     className="bg-brand-950 pointer-events-none absolute bottom-full left-0 z-20 mb-1.5 hidden w-max max-w-64 rounded-md px-2.5 py-2 text-xs text-white shadow-lg group-hover:block group-focus-visible:block"
                   >
                     <span className="block font-semibold">
-                      {p.maquinaTag} · {p.causa}
+                      {p.maquinaTag} · {p.motivo}
                     </span>
                     <span className="text-brand-200 block">
                       {p.inicio} – {p.fim ?? "em curso"} ·{" "}
@@ -99,7 +99,6 @@ export function ShiftTimeline({
                     </span>
                     <span className="text-brand-200 block">
                       Origem: {NOME_PILAR[p.pilarOrigem]}
-                      {p.custo > 0 ? ` · ${formatarMoeda(p.custo)}` : ""}
                     </span>
                   </span>
                 </div>

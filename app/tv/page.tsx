@@ -1,7 +1,6 @@
 import { Gauge } from "@/components/charts/gauge";
 import { TvAlerta } from "@/components/tv/tv-alerta";
 import { TvHeader } from "@/components/tv/tv-header";
-import { TvMaquinaTile } from "@/components/tv/tv-maquina-tile";
 import { TvPlacarHora } from "@/components/tv/tv-placar-hora";
 import { MeterLinha } from "@/components/ui/meter";
 import {
@@ -10,7 +9,6 @@ import {
   formatarMoedaCompacta,
   formatarPercentual,
 } from "@/lib/format";
-import { maquinas } from "@/lib/mock/fabrica";
 import { alertasCriticosPublicos } from "@/lib/mock/alertas";
 import { producaoPorHora, resumoGeral } from "@/lib/mock/geral";
 import { statusOee } from "@/lib/status";
@@ -154,22 +152,6 @@ export default function TelaoPage() {
         </section>
       </div>
 
-      {/* ───────────────────── Qual máquina está parada ────────────────── */}
-      <section className="flex flex-col gap-4">
-        <h2 className="font-display text-content flex items-baseline gap-3 text-2xl font-bold">
-          Frota
-          <span className="text-content-muted text-xl font-semibold tabular-nums">
-            {resumoGeral.maquinasRodando} de {resumoGeral.maquinasTotal} em
-            operação
-          </span>
-        </h2>
-
-        <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
-          {maquinas.map((m) => (
-            <TvMaquinaTile key={m.id} maquina={m} />
-          ))}
-        </ul>
-      </section>
     </div>
   );
 }

@@ -5,7 +5,6 @@ import {
   TURNO_ATUAL,
   estacoes,
   linhas,
-  maquinas,
   paradasDoTurno,
 } from "./fabrica";
 import { oee12Horas, resumoGeral } from "./geral";
@@ -488,7 +487,7 @@ export const paradasSimuladas: ParadaSimulada[] = [
     inicio: "06:00",
     fim: null,
     duracaoMinutos: 204,
-    pilarOrigem: "maquinas",
+    pilarOrigem: "pessoas",
   },
   {
     id: "SP-02",
@@ -565,7 +564,7 @@ export const paradasSimuladas: ParadaSimulada[] = [
     inicio: "09:06",
     fim: null,
     duracaoMinutos: 18,
-    pilarOrigem: "maquinas",
+    pilarOrigem: "pessoas",
   },
   {
     id: "SP-07",
@@ -580,7 +579,7 @@ export const paradasSimuladas: ParadaSimulada[] = [
     inicio: "07:44",
     fim: "08:02",
     duracaoMinutos: 18,
-    pilarOrigem: "maquinas",
+    pilarOrigem: "pessoas",
   },
   {
     id: "SP-08",
@@ -595,7 +594,7 @@ export const paradasSimuladas: ParadaSimulada[] = [
     inicio: "08:30",
     fim: "08:42",
     duracaoMinutos: 12,
-    pilarOrigem: "maquinas",
+    pilarOrigem: "pessoas",
   },
 
   /* ── Microparadas: contadas pelo CLP, nunca apontadas por ninguém ──── */
@@ -612,7 +611,7 @@ export const paradasSimuladas: ParadaSimulada[] = [
     inicio: "07:18",
     fim: "07:23",
     duracaoMinutos: 5,
-    pilarOrigem: "maquinas",
+    pilarOrigem: "pessoas",
   },
   {
     id: "SP-10",
@@ -627,7 +626,7 @@ export const paradasSimuladas: ParadaSimulada[] = [
     inicio: "07:52",
     fim: "07:56",
     duracaoMinutos: 4,
-    pilarOrigem: "maquinas",
+    pilarOrigem: "pessoas",
   },
   {
     id: "SP-11",
@@ -642,7 +641,7 @@ export const paradasSimuladas: ParadaSimulada[] = [
     inicio: "08:11",
     fim: "08:17",
     duracaoMinutos: 6,
-    pilarOrigem: "maquinas",
+    pilarOrigem: "pessoas",
   },
   {
     id: "SP-12",
@@ -657,7 +656,7 @@ export const paradasSimuladas: ParadaSimulada[] = [
     inicio: "08:35",
     fim: "08:45",
     duracaoMinutos: 10,
-    pilarOrigem: "maquinas",
+    pilarOrigem: "pessoas",
   },
   {
     id: "SP-13",
@@ -672,7 +671,7 @@ export const paradasSimuladas: ParadaSimulada[] = [
     inicio: "08:58",
     fim: "09:01",
     duracaoMinutos: 3,
-    pilarOrigem: "maquinas",
+    pilarOrigem: "pessoas",
   },
   {
     id: "SP-14",
@@ -687,7 +686,7 @@ export const paradasSimuladas: ParadaSimulada[] = [
     inicio: "09:12",
     fim: "09:17",
     duracaoMinutos: 5,
-    pilarOrigem: "maquinas",
+    pilarOrigem: "pessoas",
   },
   {
     id: "SP-15",
@@ -702,7 +701,7 @@ export const paradasSimuladas: ParadaSimulada[] = [
     inicio: "09:19",
     fim: "09:22",
     duracaoMinutos: 3,
-    pilarOrigem: "maquinas",
+    pilarOrigem: "pessoas",
   },
 ];
 
@@ -713,7 +712,6 @@ export const conciliacaoParadas = {
     (s, p) => s + p.duracaoMinutos,
     0,
   ),
-  totalDasMaquinas: maquinas.reduce((s, m) => s + m.paradaMinutos, 0),
 };
 
 /* ──────────────────────────────── Eventos ───────────────────────────── */
@@ -800,22 +798,14 @@ export const confiabilidadeEstacoes: ConfiabilidadeEstacao[] = (
 ).map(([estacaoId, desdeUltimaParada, ultimaParada]) => {
   const e = estacoesSimuladas.find((x) => x.id === estacaoId)!;
 
-  const daEstacao = e.maquinaTags
-    .map((tag) => maquinas.find((m) => m.tag === tag))
-    .filter((m): m is NonNullable<typeof m> => Boolean(m));
-
-  const critica = daEstacao.reduce((pior, m) =>
-    m.mtbfHoras < pior.mtbfHoras ? m : pior,
-  );
-
   return {
     estacaoId: e.id,
     nome: e.nome,
     linhaId: e.linhaId,
     setor: e.setor,
-    maquinaTag: critica.tag,
-    mttrMinutos: critica.mttrMinutos,
-    mtbfMinutos: critica.mtbfHoras * 60,
+    maquinaTag: e.maquinaTags[0] ?? "—",
+    mttrMinutos: 45,
+    mtbfMinutos: 2880,
     desdeUltimaParada,
     ultimaParada,
   };
@@ -909,18 +899,12 @@ export const configuracaoPlanta: ConfiguracaoPlanta = {
     },
   ],
   linhas: linhas.map((l) => {
-    const daLinha = maquinas.filter((m) => m.linhaId === l.id);
-    const estacoesDaLinha = estacoes.filter((e) => e.linhaId === l.id);
+    const estacoesDaLinha = estacoesSimuladas.filter((e) => e.linhaId === l.id);
     return {
       linhaId: l.id,
-      // MTTR/MTBF configurados = média da frota da linha. É o parâmetro que o
-      // motor usa para sortear falhas; a frota real é que o valida.
-      mttrMinutos: Math.round(
-        daLinha.reduce((s, m) => s + m.mttrMinutos, 0) / daLinha.length,
-      ),
-      mtbfMinutos: Math.round(
-        (daLinha.reduce((s, m) => s + m.mtbfHoras, 0) / daLinha.length) * 60,
-      ),
+      // MTTR/MTBF configurados = valores padrão por setor.
+      mttrMinutos: 45,
+      mtbfMinutos: 2880,
       taktSegundos: taktDaLinha(l.id),
       pph: l.cadenciaNominal,
       leadtimeMinutos: Math.round(

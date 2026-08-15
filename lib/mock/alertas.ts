@@ -17,24 +17,6 @@ import type { Alerta } from "./types";
 
 export const alertas: Alerta[] = [
   {
-    id: "A01",
-    severidade: "critico",
-    pilar: "maquinas",
-    titulo: "SOL-06 parada há 1h 12min",
-    descricao:
-      "Solda Ponto B sem peça vinda da estação anterior. Linha 2 opera a 39% da cadência nominal.",
-    origem: "Linha 2 · SOL-06",
-    emitidoEm: "08:12",
-    idadeMinutos: 72,
-    slaMinutos: 30,
-    responsavel: "Cláudio Menezes",
-    status: "reconhecido",
-    causaRaiz:
-      "Estação Montagem B sem operador desde 06:00 (ausência não coberta) → a estação parou de entregar peça para a SOL-06 às 08:12 → SOL-06 sem entrada.",
-    impactoEstimado: 4180,
-    sonoro: true,
-  },
-  {
     id: "A02",
     severidade: "critico",
     pilar: "pessoas",
@@ -69,35 +51,6 @@ export const alertas: Alerta[] = [
     sonoro: false,
     // Nomeia um colaborador: fica restrito ao painel autenticado.
     restritoAoPainel: true,
-  },
-  {
-    id: "A07",
-    severidade: "atencao",
-    pilar: "maquinas",
-    titulo: "TRN-10 em setup há 18min",
-    descricao: "Tempo padrão de setup é 12min. Excedente de 6min.",
-    origem: "Linha 3 · TRN-10",
-    emitidoEm: "09:06",
-    idadeMinutos: 18,
-    slaMinutos: 30,
-    responsavel: "Rafael Nogueira",
-    status: "reconhecido",
-    impactoEstimado: 410,
-    sonoro: false,
-  },
-  {
-    id: "A08",
-    severidade: "informativo",
-    pilar: "maquinas",
-    titulo: "RET-12 em manutenção preventiva",
-    descricao: "Parada programada. Retorno previsto para 13:00.",
-    origem: "Linha 3 · RET-12",
-    emitidoEm: "06:00",
-    idadeMinutos: 204,
-    slaMinutos: 0,
-    responsavel: "Wagner Duarte",
-    status: "reconhecido",
-    sonoro: false,
   },
 ];
 

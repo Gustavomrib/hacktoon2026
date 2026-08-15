@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Boxes, Clock, MonitorPlay, TriangleAlert } from "lucide-react";
+import { ArrowRight, Clock, MonitorPlay, TriangleAlert } from "lucide-react";
 import { PageHeader, SecaoHeader } from "@/components/app-shell/page-header";
 import { AlertaCard } from "@/components/alertas/alerta-card";
 import { BarChart } from "@/components/charts/bar-chart";
@@ -27,8 +27,8 @@ import {
   HORARIO_TURNO,
   TURNO_ATUAL,
   causasParada,
-  paradasDoTurno,
 } from "@/lib/mock/fabrica";
+import { paradasSimuladas } from "@/lib/mock/simulador";
 import {
   oee7Dias,
   resumoGeral,
@@ -47,8 +47,6 @@ export default function VisaoGeralPage() {
   const pilaresNoPareto = Array.from(
     new Set(causasParada.map((c) => c.pilarOrigem)),
   ) as Pilar[];
-
-  const perdaTotal = paradasDoTurno.reduce((s, p) => s + p.custo, 0);
 
   return (
     <div className="flex flex-col gap-6">
@@ -138,12 +136,6 @@ export default function VisaoGeralPage() {
             tendencia={tendenciaOeeGlobal}
           />
           <StatTile
-            rotulo="Máquinas em operação"
-            valor={`${resumoGeral.maquinasRodando} / ${resumoGeral.maquinasTotal}`}
-            nota={`${resumoGeral.maquinasParadas} paradas · ${resumoGeral.maquinasOciosas} ociosa · ${resumoGeral.maquinasSetup} em setup · ${resumoGeral.maquinasManutencao} em preventiva`}
-            icone={<Boxes />}
-          />
-          <StatTile
             rotulo="Tempo parado acumulado"
             valor={formatarDuracao(resumoGeral.minutosParadosTurno)}
             delta={{
@@ -151,7 +143,6 @@ export default function VisaoGeralPage() {
               periodo: "vs. turno anterior",
               bomQuandoSobe: false,
             }}
-            nota={`Perda registrada de ${formatarMoeda(perdaTotal)}`}
             icone={<Clock />}
           />
         </div>
@@ -202,7 +193,7 @@ export default function VisaoGeralPage() {
           nota="Barras com ponta pulsante seguem em curso. Passe o cursor para ver causa, duração e custo."
         >
           <ShiftTimeline
-            paradas={paradasDoTurno}
+            paradas={paradasSimuladas}
             inicioTurno="06:00"
             fimTurno="14:20"
             agora={AGORA}

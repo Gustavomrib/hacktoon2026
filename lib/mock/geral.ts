@@ -25,14 +25,7 @@ export const resumoGeral = {
   custoParadaHoje: 10990,
   custoParadaMes: 184200,
 
-  maquinasTotal: 12,
-  maquinasRodando: 7,
-  maquinasParadas: 2,
-  maquinasSetup: 1,
-  maquinasManutencao: 1,
-  maquinasOciosas: 1,
-
-  minutosParadosTurno: 586,
+  minutosParadosTurno: 206,
 };
 
 /** Cada pilar ativo resumido em um número, um estado e uma frase. */
@@ -45,15 +38,6 @@ export const statusPilares: {
   metricaRotulo: string;
   resumo: string;
 }[] = [
-  {
-    pilar: "maquinas",
-    nome: "Máquinas",
-    href: "/maquinas",
-    status: "critico",
-    metrica: "7 / 12",
-    metricaRotulo: "em operação",
-    resumo: "SOL-06 parada há 1h 12min · RET-12 em preventiva",
-  },
   {
     pilar: "pessoas",
     nome: "Pessoas",
