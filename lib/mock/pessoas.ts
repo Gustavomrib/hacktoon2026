@@ -1,9 +1,4 @@
-import type {
-  Colaborador,
-  NivelHabilidade,
-  Polivalencia,
-  SugestaoRemanejamento,
-} from "./types";
+import type { Colaborador } from "./types";
 
 /**
  * Pilar Pessoas — o módulo profundo.
@@ -138,72 +133,6 @@ export const colaboradores: Colaborador[] = [
       { fator: "Retorno de feriado prolongado", contribuicao: 8, detalhe: "Dia com maior histórico de falta no setor" },
       { fator: "Histórico pessoal (90 dias)", contribuicao: 3, detalhe: "Sem ausências no período" },
     ],
-  },
-];
-
-/* ─────────────────────── Matriz de polivalência ─────────────────────── */
-
-export const estacoesMatriz = [
-  { id: "E02", nome: "Solda A" },
-  { id: "E03", nome: "Montagem A" },
-  { id: "E04", nome: "Inspeção A" },
-  { id: "E05", nome: "Prensagem B" },
-  { id: "E06", nome: "Solda B" },
-  { id: "E07", nome: "Montagem B" },
-  { id: "E08", nome: "Inspeção B" },
-  { id: "E09", nome: "Torneamento" },
-];
-
-export const NIVEIS_HABILIDADE: Record<NivelHabilidade, string> = {
-  0: "Não treinado",
-  1: "Em treinamento",
-  2: "Autônomo",
-  3: "Referência",
-};
-
-export const polivalencia: Polivalencia[] = [
-  { colaboradorId: "C01", niveis: { E02: 0, E03: 2, E04: 1, E05: 0, E06: 0, E07: 3, E08: 1, E09: 0 } },
-  { colaboradorId: "C04", niveis: { E02: 0, E03: 3, E04: 2, E05: 1, E06: 0, E07: 3, E08: 2, E09: 0 } },
-  { colaboradorId: "C06", niveis: { E02: 1, E03: 3, E04: 2, E05: 2, E06: 0, E07: 2, E08: 1, E09: 0 } },
-  { colaboradorId: "C12", niveis: { E02: 0, E03: 2, E04: 1, E05: 0, E06: 0, E07: 2, E08: 0, E09: 0 } },
-  { colaboradorId: "C08", niveis: { E02: 0, E03: 1, E04: 3, E05: 0, E06: 0, E07: 1, E08: 3, E09: 0 } },
-  { colaboradorId: "C02", niveis: { E02: 0, E03: 1, E04: 3, E05: 0, E06: 0, E07: 0, E08: 3, E09: 0 } },
-  { colaboradorId: "C09", niveis: { E02: 3, E03: 1, E04: 0, E05: 1, E06: 3, E07: 0, E08: 0, E09: 0 } },
-  { colaboradorId: "C03", niveis: { E02: 2, E03: 0, E04: 0, E05: 1, E06: 3, E07: 0, E08: 0, E09: 1 } },
-  { colaboradorId: "C07", niveis: { E02: 1, E03: 1, E04: 0, E05: 3, E06: 1, E07: 1, E08: 0, E09: 0 } },
-  { colaboradorId: "C05", niveis: { E02: 0, E03: 0, E04: 0, E05: 1, E06: 1, E07: 0, E08: 0, E09: 3 } },
-  { colaboradorId: "C10", niveis: { E02: 0, E03: 0, E04: 1, E05: 0, E06: 0, E07: 0, E08: 1, E09: 2 } },
-  { colaboradorId: "C11", niveis: { E02: 0, E03: 0, E04: 1, E05: 0, E06: 0, E07: 0, E08: 0, E09: 2 } },
-];
-
-/* ───────────────────────── Sugestões de cobertura ───────────────────── */
-
-export const sugestoesRemanejamento: SugestaoRemanejamento[] = [
-  {
-    id: "S01",
-    estacaoDescobertaId: "E07",
-    estacaoDescobertaNome: "Montagem B",
-    ausenteNome: "Priscila Ramos",
-    candidatoNome: "Cleide Barbosa",
-    candidatoOrigemNome: "Montagem A",
-    nivelCandidato: 2,
-    justificativa:
-      "Autônoma na estação e a Montagem A opera hoje com 3 de 3 operadores contra lotação mínima de 3 — porém a Linha 1 roda 14% abaixo da cadência nominal, o que absorve a saída de um operador sem perda de ritmo.",
-    impactoEvitado: 3420,
-    status: "pendente",
-  },
-  {
-    id: "S02",
-    estacaoDescobertaId: "E08",
-    estacaoDescobertaNome: "Inspeção B",
-    ausenteNome: "Anderson Lima",
-    candidatoNome: "Simone Vieira",
-    candidatoOrigemNome: "Inspeção A",
-    nivelCandidato: 3,
-    justificativa:
-      "Referência na estação. A Inspeção A pode operar em regime alternado entre as duas linhas sem descobrir a Linha 1, já que a cadência atual permite inspeção em lote.",
-    impactoEvitado: 2180,
-    status: "pendente",
   },
 ];
 
