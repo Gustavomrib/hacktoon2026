@@ -50,7 +50,7 @@ export const navegacao: ItemNavegacao[] = [
     href: "/pessoas",
     rotulo: "Pessoas",
     Icone: Users,
-    descricao: "Presença, risco de ausência e cobertura",
+    descricao: "Preditiva (risco de ausência) e corretiva (cobertura sugerida)",
   },
   {
     href: "/alertas",

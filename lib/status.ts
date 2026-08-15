@@ -22,6 +22,11 @@ import type {
   Status,
   TipoEventoSimulado,
 } from "@/lib/mock/types";
+import type {
+  BlockReason,
+  MatchClassification,
+  OperationalImpact,
+} from "@/lib/api/motor2";
 
 /**
  * Mapeamento único de estado → cor, ícone e rótulo.
@@ -275,6 +280,50 @@ export function statusOee(valor: number, meta: number): Status {
   if (valor >= meta * 0.88) return "atencao";
   return "critico";
 }
+
+/* ───────────────── Classificação de match (motor2) ───────────────────── */
+
+const classificacaoMatchMap: Record<
+  MatchClassification,
+  { status: Status; rotulo: string }
+> = {
+  EXCELENTE: { status: "ok", rotulo: "Excelente" },
+  BOM: { status: "ok", rotulo: "Bom" },
+  ACEITAVEL: { status: "atencao", rotulo: "Aceitável" },
+  NAO_RECOMENDADO: { status: "critico", rotulo: "Não recomendado" },
+};
+
+export function estiloClassificacaoMatch(classificacao: MatchClassification) {
+  const { status, rotulo } = classificacaoMatchMap[classificacao];
+  return { ...estiloStatus(status), rotulo };
+}
+
+const impactoOperacionalMap: Record<
+  OperationalImpact,
+  { status: Status; rotulo: string }
+> = {
+  BAIXO: { status: "ok", rotulo: "Baixo" },
+  MEDIO: { status: "atencao", rotulo: "Médio" },
+  ALTO: { status: "critico", rotulo: "Alto" },
+  CRITICO: { status: "critico", rotulo: "Crítico" },
+};
+
+export function estiloImpactoOperacional(impacto: OperationalImpact) {
+  const { status, rotulo } = impactoOperacionalMap[impacto];
+  return { ...estiloStatus(status), rotulo };
+}
+
+/** Por que um candidato foi descartado do ranking — vai no card de detalhe,
+ *  nunca escondido, porque é o que sustenta a confiança no motor. */
+export const ROTULO_BLOQUEIO: Record<BlockReason, string> = {
+  INDISPONIVEL: "Indisponível",
+  HABILIDADE_OBRIGATORIA_AUSENTE: "Sem habilidade obrigatória",
+  CAPACITACAO_VENCIDA: "Capacitação vencida",
+  NIVEL_INSUFICIENTE: "Nível insuficiente",
+  PROFISSIONAL_CRITICO_SEM_BACKUP: "Profissional crítico sem backup",
+  ORIGEM_MAIS_CRITICA: "Origem mais crítica que o destino",
+  COBERTURA_ORIGEM_ABAIXO_DO_LIMITE: "Cobertura da origem abaixo do limite",
+};
 
 /*
  * `statusOrdem` e `statusEstoque` viviam aqui e saíram junto com Processos e

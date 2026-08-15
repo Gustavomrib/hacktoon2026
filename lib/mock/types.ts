@@ -294,29 +294,6 @@ export interface Colaborador {
   horasExtras14d: number;
 }
 
-/** Nível de habilidade numa estação. Escala ordinal — a cor mostra a ordem. */
-export type NivelHabilidade = 0 | 1 | 2 | 3;
-
-export interface Polivalencia {
-  colaboradorId: string;
-  /** estacaoId → nível */
-  niveis: Record<string, NivelHabilidade>;
-}
-
-export interface SugestaoRemanejamento {
-  id: string;
-  estacaoDescobertaId: string;
-  estacaoDescobertaNome: string;
-  ausenteNome: string;
-  candidatoNome: string;
-  candidatoOrigemNome: string;
-  nivelCandidato: NivelHabilidade;
-  /** Justificativa em linguagem natural — o que o gestor lê antes de decidir. */
-  justificativa: string;
-  impactoEvitado: number;
-  status: "pendente" | "aceita" | "recusada";
-}
-
 export interface Estacao {
   id: string;
   nome: string;
