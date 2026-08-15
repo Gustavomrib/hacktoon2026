@@ -1,2 +1,244 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   DESIGN SYSTEM — Design Tokens
+   Fonte única de verdade. Tudo que for visual sai daqui.
+   ========================================================================== */
+
+@theme {
+  /* ------------------------------------------------------------------
+     1. COR — Paleta primitiva
+     Rampa derivada dos 5 tons da paleta base:
+     0A1931 · 1A3D63 · 4A7FA7 · B3CFE5 · F6FAFD
+     ------------------------------------------------------------------ */
+  --color-brand-50: #f6fafd;
+  --color-brand-100: #e9f2f9;
+  --color-brand-200: #b3cfe5;
+  --color-brand-300: #8fb8d8;
+  --color-brand-400: #689ec2;
+  --color-brand-500: #4a7fa7;
+  --color-brand-600: #3c6b8f;
+  --color-brand-700: #2b5279;
+  --color-brand-800: #1a3d63;
+  --color-brand-900: #122b47;
+  --color-brand-950: #0a1931;
+
+  /* Neutros — cinzas com leve viés azulado para casar com a marca */
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #f8fafc;
+  --color-neutral-100: #f1f5f9;
+  --color-neutral-200: #e4eaf1;
+  --color-neutral-300: #cbd5e1;
+  --color-neutral-400: #94a3b8;
+  --color-neutral-500: #64748b;
+  --color-neutral-600: #475569;
+  --color-neutral-700: #334155;
+  --color-neutral-800: #1e293b;
+  --color-neutral-900: #0f172a;
+
+  /* Estados — harmonizados em saturação com a marca */
+  --color-success-50: #ecfdf5;
+  --color-success-500: #10b981;
+  --color-success-700: #047857;
+
+  --color-warning-50: #fffbeb;
+  --color-warning-500: #f59e0b;
+  --color-warning-700: #b45309;
+
+  --color-danger-50: #fef2f2;
+  --color-danger-500: #ef4444;
+  --color-danger-700: #b91c1c;
+
+  --color-info-50: #eff6ff;
+  --color-info-500: #3b82f6;
+  --color-info-700: #1d4ed8;
+
+  /* ------------------------------------------------------------------
+     2. COR — Tokens semânticos
+     Componentes consomem SEMPRE estes, nunca a rampa primitiva.
+     ------------------------------------------------------------------ */
+  --color-canvas: #4a7fa7; /* fundo externo da aplicação */
+  --color-surface: #ffffff; /* cards, painéis, superfícies elevadas */
+  --color-surface-muted: #f6fafd; /* zebra, blocos internos, hover sutil */
+  --color-surface-inset: #e9f2f9; /* inputs, wells, skeleton */
+
+  --color-border: #e4eaf1; /* divisórias e contornos padrão */
+  --color-border-strong: #cbd5e1; /* contorno de input, ênfase */
+
+  --color-content: #0a1931; /* texto primário */
+  --color-content-secondary: #1a3d63; /* subtítulos, labels de destaque */
+  --color-content-muted: #64748b; /* metadados, placeholders, captions */
+  --color-content-onbrand: #f6fafd; /* texto sobre superfície de marca */
+
+  --color-primary: #4a7fa7;
+  --color-primary-hover: #3c6b8f;
+  --color-primary-active: #2b5279;
+  --color-primary-subtle: #e9f2f9; /* fundo de chips/botões suaves */
+  --color-primary-foreground: #ffffff;
+
+  --color-accent: #1a3d63;
+  --color-focus-ring: #4a7fa7;
+
+  /* ------------------------------------------------------------------
+     3. TIPOGRAFIA — Famílias
+     Injetadas por next/font em app/layout.tsx
+     ------------------------------------------------------------------ */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-sora), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  /* ------------------------------------------------------------------
+     4. TIPOGRAFIA — Escala (raiz 16px, unidades rem)
+     ------------------------------------------------------------------ */
+  --text-xs: 0.75rem; /* 12px — legendas, badges */
+  --text-xs--line-height: 1rem;
+  --text-xs--letter-spacing: 0.01em;
+
+  --text-sm: 0.875rem; /* 14px — texto secundário, inputs */
+  --text-sm--line-height: 1.25rem;
+
+  --text-base: 1rem; /* 16px — corpo padrão, botões */
+  --text-base--line-height: 1.5rem;
+
+  --text-lg: 1.125rem; /* 18px — subtítulos leves */
+  --text-lg--line-height: 1.75rem;
+
+  --text-xl: 1.25rem; /* 20px — título de card, h4 */
+  --text-xl--line-height: 1.75rem;
+  --text-xl--letter-spacing: -0.01em;
+
+  --text-2xl: 1.5rem; /* 24px — h3 */
+  --text-2xl--line-height: 2rem;
+  --text-2xl--letter-spacing: -0.015em;
+
+  --text-3xl: 1.875rem; /* 30px — h2 */
+  --text-3xl--line-height: 2.25rem;
+  --text-3xl--letter-spacing: -0.02em;
+
+  --text-4xl: 2.25rem; /* 36px — h1 */
+  --text-4xl--line-height: 2.5rem;
+  --text-4xl--letter-spacing: -0.025em;
+
+  /* Pesos */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ------------------------------------------------------------------
+     5. ESPAÇAMENTO — Grid de 4px
+     space-1 = 4px · space-2 = 8px · space-4 = 16px · space-6 = 24px …
+     ------------------------------------------------------------------ */
+  --spacing: 0.25rem;
+
+  /* ------------------------------------------------------------------
+     6. RAIO DE BORDA
+     ------------------------------------------------------------------ */
+  --radius-xs: 0.25rem; /* 4px  — checkbox, tag mínima */
+  --radius-sm: 0.375rem; /* 6px  — input, checkbox */
+  --radius-md: 0.5rem; /* 8px  — botão */
+  --radius-lg: 0.75rem; /* 12px — card */
+  --radius-xl: 1rem; /* 16px — painel, modal */
+  --radius-2xl: 1.25rem; /* 20px — hero, container principal */
+  --radius-full: 9999px; /* badge, avatar, pill */
+
+  /* ------------------------------------------------------------------
+     7. ELEVAÇÃO — sombras tingidas de navy (sem cinza puro)
+     ------------------------------------------------------------------ */
+  --shadow-sm: 0 1px 2px 0 rgb(10 25 49 / 0.06),
+    0 1px 3px 0 rgb(10 25 49 / 0.08);
+  --shadow-md: 0 2px 4px -1px rgb(10 25 49 / 0.06),
+    0 8px 16px -4px rgb(10 25 49 / 0.1);
+  --shadow-lg: 0 4px 8px -2px rgb(10 25 49 / 0.08),
+    0 24px 48px -12px rgb(10 25 49 / 0.18);
+  --shadow-focus: 0 0 0 3px rgb(74 127 167 / 0.35);
+
+  /* ------------------------------------------------------------------
+     8. MOVIMENTO
+     ------------------------------------------------------------------ */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 150ms; /* hover, focus, cor */
+  --duration-base: 200ms; /* transform, layout leve */
+
+  /* ------------------------------------------------------------------
+     9. BREAKPOINTS (defaults do Tailwind, declarados como contrato)
+     ------------------------------------------------------------------ */
+  --breakpoint-sm: 40rem; /* 640px */
+  --breakpoint-md: 48rem; /* 768px */
+  --breakpoint-lg: 64rem; /* 1024px */
+  --breakpoint-xl: 80rem; /* 1280px */
+  --breakpoint-2xl: 96rem; /* 1536px */
+}
+
+/* Padrão global de transição do DS: 150ms ease-in-out */
+@theme inline {
+  --default-transition-duration: var(--duration-fast);
+  --default-transition-timing-function: var(--ease-standard);
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-content);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-content);
+    text-wrap: balance;
+  }
+
+  /* Anel de foco consistente em todo o sistema */
+  :focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+
+  ::selection {
+    background-color: var(--color-brand-200);
+    color: var(--color-brand-950);
+  }
+}
+
+@layer utilities {
+  /* Label de seção — o "WORK", "SKILLS", "CONTACT INFORMATION" do layout */
+  .label-eyebrow {
+    font-size: var(--text-xs);
+    line-height: 1rem;
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-content-muted);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

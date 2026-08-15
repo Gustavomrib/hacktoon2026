@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 340" width="320" height="340" role="img" aria-label="Retrato">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#B3CFE5"/>
+      <stop offset="60%" stop-color="#8FB8D8"/>
+      <stop offset="100%" stop-color="#4A7FA7"/>
+    </linearGradient>
+    <linearGradient id="figure" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1A3D63"/>
+      <stop offset="100%" stop-color="#0A1931"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="340" fill="url(#sky)"/>
+  <circle cx="248" cy="66" r="34" fill="#F6FAFD" opacity="0.55"/>
+  <path d="M0 268c46-26 84-10 126-26s72-46 118-38c30 5 56 22 76 34v102H0z" fill="#2B5279" opacity="0.35"/>
+  <circle cx="160" cy="150" r="54" fill="url(#figure)"/>
+  <path d="M52 340c0-58 48-104 108-104s108 46 108 104z" fill="url(#figure)"/>
+</svg>
