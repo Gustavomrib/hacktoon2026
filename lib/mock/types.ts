@@ -81,6 +81,228 @@ export interface CausaParada {
   pilarOrigem: Pilar;
 }
 
+/* ───────────────────────── Simulador de planta ──────────────────────── */
+
+/**
+ * O gêmeo digital da mesma planta.
+ *
+ * O simulador não é um segundo produto colado no módulo: ele roda o MESMO
+ * cenário que as telas de Máquinas leem — mesmas linhas, mesmas estações,
+ * mesmas máquinas, mesmo turno. É isso que dá sentido a ter as duas coisas
+ * lado a lado: a tela de frota diz o que ESTÁ acontecendo, e o simulador diz
+ * por qual caminho o chão de fábrica chegou até aqui, peça por peça.
+ *
+ * Duas máquinas podem dividir uma estação (a Torneamento tem duas), então a
+ * granularidade do simulador é a ESTAÇÃO, não a máquina. Onde o dado é de
+ * máquina — MTTR, MTBF, causa de parada — a estação carrega a tag junto.
+ */
+
+export type EstadoSimulacao = "rodando" | "pausado" | "parado";
+
+/**
+ * Estado instantâneo de uma estação.
+ *
+ * `bloqueada` e `faminta` são os dois estados que só o simulador enxerga, e
+ * são o motivo de ele existir: uma estação parada por falta de peça a montante
+ * não tem defeito nenhum, e tratá-la como "parada" no relatório de máquina
+ * manda o mantenedor abrir um equipamento que está perfeito.
+ */
+export type EstadoEstacao =
+  | "produzindo"
+  | "bloqueada"
+  | "faminta"
+  | "parada"
+  | "setup"
+  | "ociosa";
+
+export interface EstacaoSimulada {
+  /** Mesmo id de `Estacao` — as duas visões falam da mesma estação. */
+  id: string;
+  nome: string;
+  linhaId: string;
+  setor: string;
+  /** Tags das máquinas que operam nesta estação. */
+  maquinaTags: string[];
+  estado: EstadoEstacao;
+  /** Peça em processamento agora — `null` quando a estação está vazia. */
+  pecaAtual: string | null;
+  /** Takt planejado e ciclo medido, em segundos. */
+  taktSegundos: number;
+  cicloSegundos: number;
+  /** Peças concluídas no turno. */
+  produzidas: number;
+  detalhe: string;
+}
+
+export interface BufferSimulado {
+  id: string;
+  nome: string;
+  linhaId: string;
+  origemEstacaoId: string;
+  destinoEstacaoId: string;
+  capacidade: number;
+  ocupacao: number;
+  /** Peças que atravessaram o buffer no turno. */
+  fluxoTurno: number;
+}
+
+export type TipoEventoSimulado =
+  | "entrada"
+  | "saida"
+  | "retrabalho"
+  | "refugo"
+  | "bloqueio";
+
+export interface EventoSimulado {
+  id: string;
+  pecaId: string;
+  tipo: TipoEventoSimulado;
+  setor: string;
+  linhaId: string;
+  estacaoId: string;
+  /** Relógio simulado, HH:MM:SS. */
+  horario: string;
+}
+
+/**
+ * Como a parada nasceu, que é diferente de qual foi a causa.
+ *
+ * `propagacao` é a categoria que fecha a cadeia causal do produto: a parada
+ * existe, mas nasceu em OUTRA estação. Contá-la como falha da estação onde
+ * apareceu é o erro clássico que faz manutenção trocar peça boa.
+ */
+export type TipoParadaSimulada = "nao_planejada" | "planejada" | "propagacao";
+
+export interface ParadaSimulada {
+  id: string;
+  setor: string;
+  linhaId: string;
+  estacaoId: string;
+  maquinaTag: string;
+  motivo: string;
+  tipo: TipoParadaSimulada;
+  severidade: Severidade;
+  status: "aberta" | "encerrada";
+  inicio: string;
+  fim: string | null;
+  duracaoMinutos: number;
+  pilarOrigem: Pilar;
+  /** Estação onde a causa nasceu, quando o tipo é `propagacao`. */
+  origemEstacaoId?: string;
+}
+
+/** Um ponto da série hora a hora do turno simulado. */
+export interface HoraSimulada {
+  hora: string;
+  oee: number;
+  disponibilidade: number;
+  performance: number;
+  qualidade: number;
+  minutosParados: number;
+  produzidas: number;
+  /** Natureza dominante da hora — dá a cor da faixa na linha do tempo. */
+  natureza: "nominal" | TipoParadaSimulada;
+}
+
+export interface ConfiabilidadeEstacao {
+  estacaoId: string;
+  nome: string;
+  linhaId: string;
+  setor: string;
+  maquinaTag: string;
+  mttrMinutos: number;
+  mtbfMinutos: number;
+  /** Minutos decorridos desde a última parada encerrada. */
+  desdeUltimaParada: number;
+  ultimaParada: string | null;
+}
+
+export interface SessaoSimulacao {
+  id: string;
+  nome: string;
+  estado: EstadoSimulacao;
+  /** Fator de aceleração do relógio simulado. */
+  velocidade: number;
+  iniciadaEm: string;
+  relogioSimulado: string;
+  minutosSimulados: number;
+  configuracao: string;
+  autor: string;
+}
+
+export interface SaudeSimulador {
+  estado: EstadoSimulacao;
+  uptimeMinutos: number;
+  websocket: { conectado: boolean; latenciaMs: number; clientes: number };
+  banco: { conectado: boolean; latenciaMs: number; registros: number };
+  memoria: { usadaMb: number; totalMb: number; heapMb: number; externaMb: number };
+  sistema: {
+    versao: string;
+    node: string;
+    plataforma: string;
+    cpus: number;
+    ambiente: string;
+  };
+  /** Emissões por canal no último minuto — mostra se o motor está vivo. */
+  emissoes: { canal: string; porMinuto: number; ultimoEnvio: string }[];
+}
+
+/* ─────────────────── Configuração da planta simulada ─────────────────── */
+
+export interface TurnoConfigurado {
+  id: string;
+  nome: string;
+  inicio: string;
+  fim: string;
+  ativo: boolean;
+}
+
+export interface ParadaPlanejadaConfig {
+  id: string;
+  nome: string;
+  motivo: string;
+  inicio: string;
+  duracaoMinutos: number;
+  /** 1 = segunda … 7 = domingo. */
+  diasSemana: number[];
+  setoresAfetados: string[];
+}
+
+export interface LinhaConfigurada {
+  linhaId: string;
+  mttrMinutos: number;
+  mtbfMinutos: number;
+  taktSegundos: number;
+  /** Peças por hora nominais. */
+  pph: number;
+  leadtimeMinutos: number;
+  estacoes: string[];
+  capacidadeBuffer: number;
+}
+
+export interface ModeloPeca {
+  codigo: string;
+  nome: string;
+  /** Slot de série do gráfico — nunca um hex literal. */
+  cor: string;
+  /** Participação no mix do turno, em pontos percentuais. */
+  participacao: number;
+}
+
+export interface ConfiguracaoPlanta {
+  nome: string;
+  salvaEm: string;
+  autor: string;
+  pphAlvo: number;
+  leadtimeMinutos: number;
+  turnos: TurnoConfigurado[];
+  paradasPlanejadas: ParadaPlanejadaConfig[];
+  linhas: LinhaConfigurada[];
+  modelos: ModeloPeca[];
+  intervalosEmissao: { canal: string; ms: number }[];
+  estacoesDeEntrada: { linhaId: string; estacaoId: string }[];
+}
+
 /* ────────────────────────────── Pessoas ────────────────────────────── */
 
 export type FaixaRisco = "baixo" | "atencao" | "alto";

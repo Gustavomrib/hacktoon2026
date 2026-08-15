@@ -1,4 +1,4 @@
-import type { Pilar } from "@/lib/mock/types";
+import type { Pilar, TipoParadaSimulada } from "@/lib/mock/types";
 
 /**
  * Cores de série para gráficos.
@@ -45,6 +45,33 @@ export const COR_PILAR: Record<Pilar, string> = {
 export const NOME_PILAR: Record<Pilar, string> = {
   maquinas: "Máquinas",
   pessoas: "Pessoas",
+};
+
+/**
+ * Natureza da parada → slot fixo.
+ *
+ * Mesma regra do `COR_PILAR`: a cor segue a categoria, não a posição. Filtrar
+ * a lista de paradas não pode repintar as naturezas que sobraram.
+ *
+ * `planejada` fica na série de contexto de propósito. Parada planejada não é
+ * notícia — ela estava no plano, e pintá-la com a mesma força de uma parada
+ * imprevista faz o turno parecer duas vezes pior do que é.
+ */
+export const COR_TIPO_PARADA: Record<
+  "nominal" | TipoParadaSimulada,
+  string
+> = {
+  nominal: SERIE.s3,
+  planejada: SERIE.contexto,
+  nao_planejada: SERIE.s2,
+  propagacao: SERIE.s4,
+};
+
+export const NOME_TIPO_PARADA: Record<"nominal" | TipoParadaSimulada, string> = {
+  nominal: "Sem parada",
+  planejada: "Planejada",
+  nao_planejada: "Não planejada",
+  propagacao: "Propagação",
 };
 
 /** Cromo recessivo do gráfico. */

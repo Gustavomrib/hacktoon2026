@@ -1,8 +1,11 @@
 import {
+  ArrowRight,
+  Ban,
   CircleAlert,
   CircleCheck,
   CircleMinus,
   CirclePause,
+  Hourglass,
   Info,
   OctagonX,
   Play,
@@ -12,10 +15,13 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type {
+  EstadoEstacao,
+  EstadoSimulacao,
   FaixaRisco,
   Severidade,
   Status,
   StatusMaquina,
+  TipoEventoSimulado,
 } from "@/lib/mock/types";
 
 /**
@@ -123,6 +129,119 @@ const statusMaquinaMap: Record<
 export function estiloMaquina(status: StatusMaquina) {
   const { status: s, rotulo, Icone } = statusMaquinaMap[status];
   return { ...estiloStatus(s), rotulo, Icone };
+}
+
+/* ───────────────────── Estado de estação no simulador ───────────────── */
+
+/**
+ * Estado de fluxo → escala de status.
+ *
+ * `bloqueada` e `faminta` são **atenção**, não crítico, e a distinção é a
+ * coisa mais importante deste mapa: nenhuma das duas é defeito da estação.
+ * Uma estação bloqueada está perfeita — ela só não tem para onde entregar.
+ * Pintá-la de vermelho manda o mantenedor abrir um equipamento que não tem
+ * nada, e é exatamente o erro que o simulador existe para evitar.
+ *
+ * Quem está em crítico é a estação que de fato interrompeu por conta própria.
+ */
+const statusEstacaoMap: Record<
+  EstadoEstacao,
+  { status: Status; rotulo: string; Icone: LucideIcon }
+> = {
+  produzindo: { status: "ok", rotulo: "Produzindo", Icone: Play },
+  bloqueada: { status: "atencao", rotulo: "Bloqueada", Icone: Ban },
+  faminta: { status: "atencao", rotulo: "Faminta", Icone: Hourglass },
+  parada: { status: "critico", rotulo: "Parada", Icone: OctagonX },
+  setup: { status: "atencao", rotulo: "Setup", Icone: RefreshCw },
+  ociosa: { status: "neutro", rotulo: "Ociosa", Icone: CirclePause },
+};
+
+export function estiloEstacao(estado: EstadoEstacao) {
+  const { status, rotulo, Icone } = statusEstacaoMap[estado];
+  return { ...estiloStatus(status), rotulo, Icone };
+}
+
+/**
+ * Explicação curta do estado — vai junto do rótulo no card.
+ *
+ * O rótulo diz o estado; isto diz o que fazer com ele. "Bloqueada" sem esta
+ * frase é um jargão de simulação que só quem escreveu o motor entende.
+ */
+export const EXPLICACAO_ESTACAO: Record<EstadoEstacao, string> = {
+  produzindo: "Consumindo e entregando no ritmo previsto.",
+  bloqueada: "Sem defeito — o buffer de saída está cheio e não há para onde entregar.",
+  faminta: "Sem defeito — não chega peça da estação anterior.",
+  parada: "Interrompida por conta própria — falha, preventiva ou setup.",
+  setup: "Troca de ferramenta ou ajuste em andamento.",
+  ociosa: "Sem lotação suficiente para rodar no ritmo nominal.",
+};
+
+/* ──────────────────────── Evento de peça no motor ───────────────────── */
+
+/**
+ * Tipo de evento → estado.
+ *
+ * `entrada` e `saida` são o batimento normal da linha e ficam em neutro de
+ * propósito: são a esmagadora maioria dos registros, e pintá-los de verde
+ * transformaria a lista inteira num campo colorido onde os três tipos que
+ * realmente pedem atenção deixariam de saltar.
+ *
+ * Cor aqui é orçamento: gastá-la no que acontece o tempo todo é ficar sem ela
+ * quando aparece o refugo.
+ */
+const eventoMap: Record<
+  TipoEventoSimulado,
+  { status: Status; rotulo: string; Icone: LucideIcon }
+> = {
+  entrada: { status: "neutro", rotulo: "Entrada", Icone: ArrowRight },
+  saida: { status: "neutro", rotulo: "Saída", Icone: CircleCheck },
+  retrabalho: { status: "atencao", rotulo: "Retrabalho", Icone: RefreshCw },
+  refugo: { status: "critico", rotulo: "Refugo", Icone: OctagonX },
+  bloqueio: { status: "atencao", rotulo: "Bloqueio", Icone: Ban },
+};
+
+export function estiloEvento(tipo: TipoEventoSimulado) {
+  const { status, rotulo, Icone } = eventoMap[tipo];
+  return { ...estiloStatus(status), rotulo, Icone };
+}
+
+export const TIPOS_EVENTO = Object.keys(eventoMap) as TipoEventoSimulado[];
+
+/* ────────────────────────── Ocupação de buffer ──────────────────────── */
+
+/**
+ * Buffer na escala de status.
+ *
+ * Os dois extremos são ruins e por motivos opostos, e é isso que impede o
+ * mapa de ser um gradiente simples: cheio trava a estação de TRÁS, que não
+ * tem para onde entregar; vazio deixa a estação da FRENTE sem o que fazer.
+ * Um buffer pela metade é o único estado que não está causando problema para
+ * ninguém — e é por isso que "quanto mais cheio, melhor" é a leitura errada.
+ *
+ * Cheio é crítico e vazio é atenção porque a assimetria existe na prática: um
+ * buffer cheio já parou alguém, enquanto um vazio pode ser só o começo de um
+ * lote ou uma linha que acabou de arrancar.
+ */
+export function statusBuffer(ocupacao: number, capacidade: number): Status {
+  if (ocupacao >= capacidade) return "critico";
+  if (ocupacao === 0) return "atencao";
+  return "ok";
+}
+
+/* ───────────────────── Estado do motor de simulação ─────────────────── */
+
+const statusSimulacaoMap: Record<
+  EstadoSimulacao,
+  { status: Status; rotulo: string; Icone: LucideIcon }
+> = {
+  rodando: { status: "ok", rotulo: "Rodando", Icone: Play },
+  pausado: { status: "atencao", rotulo: "Pausado", Icone: CirclePause },
+  parado: { status: "neutro", rotulo: "Parado", Icone: OctagonX },
+};
+
+export function estiloSimulacao(estado: EstadoSimulacao) {
+  const { status, rotulo, Icone } = statusSimulacaoMap[estado];
+  return { ...estiloStatus(status), rotulo, Icone };
 }
 
 /* ──────────────────────── Faixa de risco de ausência ─────────────────── */
